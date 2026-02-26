@@ -108,6 +108,10 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    CSRF_TRUSTED_ORIGINS = config(
+        'CSRF_TRUSTED_ORIGINS',
+        default='https://medivault-backend.onrender.com,https://medivault-frontend.onrender.com'
+    ).split(',')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
