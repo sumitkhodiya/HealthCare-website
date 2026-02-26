@@ -5,7 +5,9 @@ from . import views
 urlpatterns = [
     # JWT login (Doctor/Admin)
     path('login/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # Keep both endpoints for compatibility
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh_v2'),
 
     # Patient OTP login
     path('otp/request/', views.OTPRequestView.as_view(), name='otp_request'),

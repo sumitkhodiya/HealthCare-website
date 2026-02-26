@@ -11,7 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key')
 DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = [
+    h.strip()
+    for h in config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.onrender.com').split(',')
+    if h.strip()
+]
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -117,6 +121,8 @@ if not DEBUG:
         for origin in _raw_csrf_origins.split(',')
         if origin.strip()
     ]
+    if 'https://*.onrender.com' not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append('https://*.onrender.com')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -155,6 +161,12 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # Allow all in dev
+if not DEBUG:
+    # Helpful defaults for hosted frontends (configure CORS_ALLOWED_ORIGINS for stricter control)
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r'^https://.*\.onrender\.com$',
+        r'^https://.*\.vercel\.app$',
+    ]
 
 # OTP Settings (in-memory for demo; use Redis/DB in prod)
 OTP_EXPIRY_MINUTES = 10

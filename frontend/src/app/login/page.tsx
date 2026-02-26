@@ -30,8 +30,30 @@ export default function LoginPage() {
             if (role === 'ADMIN') router.push('/admin/dashboard');
             else if (role === 'DOCTOR') router.push('/doctor/dashboard');
             else router.push('/patient/dashboard');
-        } catch {
-            setError('Invalid email or password');
+        } catch (e: unknown) {
+            type ErrorShape = { error?: string; detail?: string };
+            const err = e as { response?: { status?: number; data?: ErrorShape | Record<string, unknown> } };
+            const errData = err.response?.data;
+
+            const flattenErrors = (obj: unknown): string | null => {
+                if (typeof obj === 'string') return obj;
+                if (Array.isArray(obj)) {
+                    for (const item of obj) { const msg = flattenErrors(item); if (msg) return msg; }
+                } else if (obj && typeof obj === 'object') {
+                    for (const val of Object.values(obj)) { const msg = flattenErrors(val); if (msg) return msg; }
+                }
+                return null;
+            };
+
+            if (err.response?.status === 401) {
+                setError('Invalid email or password');
+            } else if (errData && typeof errData === 'object') {
+                if ('error' in errData && (errData as ErrorShape).error) setError((errData as ErrorShape).error!);
+                else if ('detail' in errData && (errData as ErrorShape).detail) setError((errData as ErrorShape).detail!);
+                else setError(flattenErrors(errData) || 'Login failed');
+            } else {
+                setError('Something went wrong. Check your API URL / CORS and try again.');
+            }
         } finally { setLoading(false); }
     };
 

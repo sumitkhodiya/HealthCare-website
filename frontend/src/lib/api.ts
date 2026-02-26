@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const DEFAULT_DEV_API_URL = 'http://localhost:8000/api';
+const DEFAULT_PROD_API_URL = 'https://healthcare-website-ynu9.onrender.com/api';
+
+const API_URL = (
+    process.env.NEXT_PUBLIC_API_URL
+    || (process.env.NODE_ENV === 'development' ? DEFAULT_DEV_API_URL : DEFAULT_PROD_API_URL)
+).replace(/\/+$/, '');
 
 const api = axios.create({
     baseURL: API_URL,
@@ -28,7 +34,7 @@ api.interceptors.response.use(
             const refresh = localStorage.getItem('refresh_token');
             if (refresh) {
                 try {
-                    const { data } = await axios.post(`${API_URL}/auth/refresh/`, { refresh });
+                    const { data } = await axios.post(`${API_URL}/auth/token/refresh/`, { refresh });
                     localStorage.setItem('access_token', data.access);
                     original.headers.Authorization = `Bearer ${data.access}`;
                     return api(original);

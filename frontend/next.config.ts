@@ -11,7 +11,12 @@ const nextConfig = {
       // Production (Render backend)
       {
         protocol: 'https',
-        hostname: 'medivault-backend.onrender.com',
+        hostname: 'healthcare-website-ynu9.onrender.com',
+      },
+      // Any Render subdomain (covers future service URLs)
+      {
+        protocol: 'https',
+        hostname: '**.onrender.com',
       },
     ],
   },
