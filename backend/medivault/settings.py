@@ -108,10 +108,15 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    CSRF_TRUSTED_ORIGINS = config(
+    _raw_csrf_origins = config(
         'CSRF_TRUSTED_ORIGINS',
         default='https://medivault-backend.onrender.com,https://medivault-frontend.onrender.com'
-    ).split(',')
+    )
+    CSRF_TRUSTED_ORIGINS = [
+        origin.strip()
+        for origin in _raw_csrf_origins.split(',')
+        if origin.strip()
+    ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -142,10 +147,12 @@ SIMPLE_JWT = {
 }
 
 # CORS
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:3000'
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    o.strip() for o in config(
+        'CORS_ALLOWED_ORIGINS',
+        default='http://localhost:3000'
+    ).split(',') if o.strip()
+]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # Allow all in dev
 
