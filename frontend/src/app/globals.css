@@ -590,3 +590,226 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* ── RESPONSIVE BREAKPOINTS ──────────────────────────────────────────────────
+   Breakpoints:
+   Mobile  : < 640px
+   Tablet  : 640px – 1023px
+   Desktop : ≥ 1024px
+─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Tablet (640px–1023px) ── */
+@media (max-width: 1023px) {
+  :root {
+    --sidebar-width: 72px; /* icon-only sidebar on tablet */
+  }
+
+  .sidebar-logo span,
+  .sidebar-link span,
+  .sidebar-section-title {
+    display: none;
+  }
+
+  .sidebar-logo {
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .sidebar-link {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .topbar {
+    padding: 12px 20px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .notif-dropdown {
+    width: 320px;
+  }
+
+  /* Login page: hide left panel */
+  .login-left-panel {
+    display: none !important;
+  }
+}
+
+/* ── Mobile (< 640px) ── */
+@media (max-width: 639px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+
+  /* Sidebar hidden off-screen, replaced by bottom nav */
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding-bottom: 72px; /* space for bottom nav */
+  }
+
+  /* Topbar */
+  .topbar {
+    padding: 10px 16px;
+  }
+
+  /* Bottom navigation bar for mobile */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    z-index: 50;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .mobile-bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 8px;
+    transition: color 0.2s;
+  }
+
+  .mobile-bottom-nav a.active,
+  .mobile-bottom-nav a:hover {
+    color: var(--brand);
+  }
+
+  /* Page layout */
+  .page-header {
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  /* Stats grid: single column on mobile */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  /* Cards */
+  .card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  /* Tables: horizontal scroll on mobile */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 10px 12px;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  /* Modal: full screen on mobile */
+  .modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal {
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Buttons: full width on mobile forms */
+  .btn-block-mobile {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Notifications dropdown: full width */
+  .notif-dropdown {
+    width: calc(100vw - 32px);
+    right: -16px;
+  }
+
+  /* Emergency banner */
+  .emergency-banner {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 14px;
+  }
+
+  /* Timeline: tighter on mobile */
+  .timeline-item {
+    gap: 12px;
+  }
+
+  .timeline-dot {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+
+  /* Login/Register pages */
+  .login-left-panel {
+    display: none !important;
+  }
+}
+
+/* ── Extra-small phones (< 375px) ── */
+@media (max-width: 374px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+}
+
+/* Hide mobile-only elements on desktop */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* Responsive content padding */
+@media (max-width: 639px) {
+  [style*="padding: 32px"],
+  [style*="padding:32px"] {
+    padding: 16px !important;
+  }
+}
